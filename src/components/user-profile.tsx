@@ -1,7 +1,7 @@
 import { useGetProfile } from "../http/generated/api";
 
 export function UserProfile() {
-  const { data, isLoading: isLoadingProfile } = useGetProfile();
+  const { data } = useGetProfile();
 
   if (!data) {
     return null;

@@ -8,11 +8,7 @@ import { Separator } from "./ui/separator";
 import dayjs from "dayjs";
 import ptBR from "dayjs/locale/pt-BR";
 import { PendingGoals } from "./pending-goals";
-import {
-  getProfile,
-  useGetProfile,
-  type GetWeekSummary200Summary,
-} from "../http/generated/api";
+import type { GetWeekSummary200Summary } from "../http/generated/api";
 import { UserProfile } from "./user-profile";
 import { UserLevel } from "./user-level";
 import { useSearchParams } from "react-router-dom";
