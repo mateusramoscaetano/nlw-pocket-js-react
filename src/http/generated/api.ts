@@ -22,6 +22,13 @@ import type {
   UseQueryResult
 } from '@tanstack/react-query'
 import { http } from '../client';
+export type GetUserExperienceAndLevel200 = {
+  experience: number;
+  experienceForCurrentLevel: number;
+  experienceToNextLevel: number;
+  level: number;
+};
+
 export type GetProfile200Profile = {
   avatarUrl: string;
   /** @nullable */
@@ -574,6 +581,97 @@ export function useGetProfile<TData = Awaited<ReturnType<typeof getProfile>>, TE
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
   const queryOptions = getGetProfileQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+/**
+ * Get user experience and level
+ */
+export const getGetUserExperienceAndLevelUrl = () => {
+
+
+  return `/profile/gamification`
+}
+
+export const getUserExperienceAndLevel = async ( options?: RequestInit): Promise<GetUserExperienceAndLevel200> => {
+  
+  return http<Promise<GetUserExperienceAndLevel200>>(getGetUserExperienceAndLevelUrl(),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+);}
+
+
+
+export const getGetUserExperienceAndLevelQueryKey = () => {
+    return [`/profile/gamification`] as const;
+    }
+
+    
+export const getGetUserExperienceAndLevelQueryOptions = <TData = Awaited<ReturnType<typeof getUserExperienceAndLevel>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserExperienceAndLevel>>, TError, TData>>, request?: SecondParameter<typeof http>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetUserExperienceAndLevelQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUserExperienceAndLevel>>> = ({ signal }) => getUserExperienceAndLevel({ signal, ...requestOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getUserExperienceAndLevel>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetUserExperienceAndLevelQueryResult = NonNullable<Awaited<ReturnType<typeof getUserExperienceAndLevel>>>
+export type GetUserExperienceAndLevelQueryError = unknown
+
+
+export function useGetUserExperienceAndLevel<TData = Awaited<ReturnType<typeof getUserExperienceAndLevel>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserExperienceAndLevel>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getUserExperienceAndLevel>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, request?: SecondParameter<typeof http>}
+
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetUserExperienceAndLevel<TData = Awaited<ReturnType<typeof getUserExperienceAndLevel>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserExperienceAndLevel>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getUserExperienceAndLevel>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, request?: SecondParameter<typeof http>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetUserExperienceAndLevel<TData = Awaited<ReturnType<typeof getUserExperienceAndLevel>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserExperienceAndLevel>>, TError, TData>>, request?: SecondParameter<typeof http>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetUserExperienceAndLevel<TData = Awaited<ReturnType<typeof getUserExperienceAndLevel>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserExperienceAndLevel>>, TError, TData>>, request?: SecondParameter<typeof http>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetUserExperienceAndLevelQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 

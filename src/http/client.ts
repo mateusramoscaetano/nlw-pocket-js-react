@@ -14,6 +14,7 @@ export async function getHeaders(headers?: HeadersInit): Promise<HeadersInit> {
 export async function http<T>(path: string, options: RequestInit): Promise<T> {
   const headers = await getHeaders(options.headers);
   const url = new URL(path, import.meta.env.VITE_API_URL);
+
   const request = new Request(url, {
     ...options,
     headers,
