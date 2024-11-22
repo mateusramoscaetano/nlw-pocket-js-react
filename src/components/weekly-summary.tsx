@@ -6,14 +6,12 @@ import { Progress, ProgressIndicator } from "./ui/progress-bar";
 import { Separator } from "./ui/separator";
 
 import dayjs from "dayjs";
-import ptBR from "dayjs/locale/pt-BR";
+
 import { PendingGoals } from "./pending-goals";
 import type { GetWeekSummary200Summary } from "../http/generated/api";
 import { UserProfile } from "./user-profile";
 import { UserLevel } from "./user-level";
 import { useSearchParams } from "react-router-dom";
-
-dayjs.locale(ptBR);
 
 interface WeeklySummaryProps {
   summary: GetWeekSummary200Summary;
@@ -25,8 +23,14 @@ export function WeeklySummary({ summary }: WeeklySummaryProps) {
   const weekStartsAt = weekStartsAtParam
     ? new Date(weekStartsAtParam)
     : new Date();
-  const fromDate = dayjs(weekStartsAt).startOf("week").format("D[ de ]MMM");
-  const toDate = dayjs(weekStartsAt).endOf("week").format("D[ de ]MMM");
+  const fromDate = dayjs(weekStartsAt)
+    .locale("pt-br")
+    .startOf("week")
+    .format("D[ de ]MMM");
+  const toDate = dayjs(weekStartsAt)
+    .locale("pt-br")
+    .endOf("week")
+    .format("D[ de ]MMM");
 
   const completedPercentage = summary.total
     ? Math.round((summary.completed * 100) / summary.total)
@@ -36,7 +40,7 @@ export function WeeklySummary({ summary }: WeeklySummaryProps) {
     const params = new URLSearchParams(searchParams);
     params.set(
       "week_starts_at",
-      dayjs(weekStartsAt).subtract(7, "days").toISOString()
+      dayjs(weekStartsAt).locale("pt-br").subtract(7, "days").toISOString()
     );
     setSearchParams(params);
   }
@@ -44,11 +48,14 @@ export function WeeklySummary({ summary }: WeeklySummaryProps) {
     const params = new URLSearchParams(searchParams);
     params.set(
       "week_starts_at",
-      dayjs(weekStartsAt).add(7, "days").toISOString()
+      dayjs(weekStartsAt).locale("pt-br").add(7, "days").toISOString()
     );
     setSearchParams(params);
   }
-  const isCurrentWeek = dayjs(weekStartsAt).endOf("week").isAfter(new Date());
+  const isCurrentWeek = dayjs(weekStartsAt)
+    .locale("pt-br")
+    .endOf("week")
+    .isAfter(new Date());
 
   return (
     <main className="max-w-[600px] px-5 py-10 mx-auto flex flex-col gap-6">
@@ -116,8 +123,10 @@ export function WeeklySummary({ summary }: WeeklySummaryProps) {
 
           {summary.goalsPerDay &&
             Object.entries(summary.goalsPerDay).map(([date, goals]) => {
-              const weekDay = dayjs(date).format("dddd");
-              const parsedDate = dayjs(date).format("D[ de ]MMM");
+              const weekDay = dayjs(date).locale("pt-br").format("dddd");
+              const parsedDate = dayjs(date)
+                .locale("pt-br")
+                .format("D[ de ]MMM");
 
               return (
                 <div className="space-y-4" key={date}>
@@ -130,9 +139,9 @@ export function WeeklySummary({ summary }: WeeklySummaryProps) {
 
                   <ul className="space-y-3">
                     {goals.map((goal) => {
-                      const parsedTime = dayjs(goal.createdAt).format(
-                        "HH:mm[h]"
-                      );
+                      const parsedTime = dayjs(goal.createdAt)
+                        .locale("pt-br")
+                        .format("HH:mm[h]");
 
                       return (
                         <li className="flex items-center gap-2" key={goal.id}>

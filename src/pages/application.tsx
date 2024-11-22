@@ -13,7 +13,10 @@ export function Application() {
     ? new Date(weekStartsAtParam)
     : new Date();
   const { data, isLoading } = useGetWeekSummary({
-    weekStartsAt: dayjs(weekStartsAt).startOf("week").toISOString(),
+    weekStartsAt: dayjs(weekStartsAt)
+      .locale("pt-br")
+      .startOf("week")
+      .toISOString(),
   });
 
   if (isLoading || !data) {
